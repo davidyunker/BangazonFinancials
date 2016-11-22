@@ -11,7 +11,7 @@ namespace BangazonFinancials
 
     public class DatabaseSeeding
     {
-        private static string _connectionString = "Data Source=" + System.Environment.GetEnvironmentVariable("Bangazon_Db_Path2");
+        private static string _connectionString = "Data Source=" + System.Environment.GetEnvironmentVariable("Revenue_Db_Path");
         public static void createTables()
         {
             SqliteConnection dbcon = new SqliteConnection(_connectionString);
