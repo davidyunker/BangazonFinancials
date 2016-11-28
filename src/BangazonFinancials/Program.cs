@@ -1,21 +1,21 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.Sqlite;
 
-namespace BangazonProductRevenueReports
+
+namespace BangazonFinancials
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            var connectionString = $"Filename={System.Environment.GetEnvironmentVariable("REPORTING_DB_PATH")}";
+            var connectionString = $"Filename={System.Environment.GetEnvironmentVariable("Revenue_Bangazon_Db")}";
 
             //Comment out these two lines for speed purposes after the initial db creation 
             //Uncomment them and run to generate fresh data
-            // DatabaseGenerator gen = new DatabaseGenerator();
-            // gen.CreateDatabase();
+            DatabaseGenerator gen = new DatabaseGenerator();
+             gen.CreateDatabase();
 
             SqliteCommand cs = new SqliteCommand();
             cs.Connection = new SqliteConnection(connectionString);
@@ -223,3 +223,7 @@ namespace BangazonProductRevenueReports
         }
     }
 }
+
+
+
+
