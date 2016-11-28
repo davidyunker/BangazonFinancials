@@ -71,7 +71,7 @@ namespace BangazonFinancials
                             "); "
                             + RandomizeCustomerProducts(1000);
 
-            var connectionString = $"Filename={System.Environment.GetEnvironmentVariable("REPORTING_DB_PATH")}";
+            var connectionString = $"Filename={System.Environment.GetEnvironmentVariable("Revenue_Bangazon_Db")}";
 
             SqliteConnection connection = new SqliteConnection(connectionString);
             using (connection)
