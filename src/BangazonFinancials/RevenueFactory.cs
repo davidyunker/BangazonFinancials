@@ -61,5 +61,28 @@ namespace BangazonFinancials
                     });
             return RevenueByCustomer;
         }
-    }  
+
+        public Dictionary<string, int> GetRevenueByProduct()
+        {
+            Dictionary<string, int> RevenueByProduct = new Dictionary<string, int>();
+
+            DatabaseGenerator.execute(@"SELECT 
+            Revenue.ProductName,
+            SUM(Revenue.ProductRevenue) 
+            FROM Revenue
+            GROUP BY Revenue.ProductName
+            ORDER BY SUM(Revenue.ProductRevenue) desc",
+
+                   (SqliteDataReader reader) =>
+                   {
+                       while (reader.Read())
+                       {
+                           RevenueByProduct.Add(reader[0].ToString(), reader.GetInt32(1));
+                       }
+
+                   });
+            return RevenueByProduct;
+
+        }
+    }
 }

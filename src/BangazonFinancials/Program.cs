@@ -18,12 +18,7 @@ namespace BangazonFinancials
             string connectionstring = DatabaseGenerator.ConnectionString();
             SqliteCommand sqliteCommand = new SqliteCommand();
             sqliteCommand.Connection = new SqliteConnection(connectionstring);
-            string Banner = "==========================";
-            string Greeting = "BANGAZON FINANCIAL REPORTS";
-
-            //Greet the user and prompt to enter name or create account and capture user input
-
-            Console.WriteLine(Banner + "\r\n" + Greeting + "\r\n" + Banner);
+           
 
 
             try
@@ -39,7 +34,6 @@ namespace BangazonFinancials
                         dbIsFullySeeded = true;
                     }
                 });
-                // Console.WriteLine("database has already been seeded");
             }
             catch (Exception e)
             {
@@ -57,6 +51,8 @@ namespace BangazonFinancials
             RevenueFactory revenueFactory = new RevenueFactory();
             var AllRevenue = revenueFactory.getAllRevenue();
             var RevenueByCustomer = revenueFactory.GetRevenueByCustomer();
+            var RevenueByProduct = revenueFactory.GetRevenueByProduct();
+
             List<Revenue> RevenueToPrint = new List<Revenue>();
 
             bool go_on = true;
@@ -65,33 +61,64 @@ namespace BangazonFinancials
             {
                 try
                 {
-
-                    Console.WriteLine("1 - Last Week Report");
-                    Console.WriteLine("2 - Last Month Report");
-                    Console.WriteLine("3 - Last 3 months Report");
-                    Console.WriteLine("4 - Revenue by customer");
-                    Console.WriteLine("5 - Revenue by product");
+                    Console.WriteLine(@"
+==========================
+BANGAZON FINANCIAL REPORTS
+==========================
+1. Weekly Report
+2. Monthly Report
+3. Quarterly Report
+4. Customer Revenue Report
+5. Product Revenue Report
+x. Exit Program");
 
                     var menuAction = Console.ReadLine();
-                    Console.WriteLine(menuAction);
+
+                    if (menuAction.ToUpper() == "X")
+                    {
+                        Console.WriteLine("Goodbye!");
+                        break;
+                    }
+
+
 
                     switch (menuAction)
                     {
                         case "1":
-                            foreach (var r in AllRevenue)
-                            {
-                                if (r.PurchaseDate > EndOfWeek)
+                            Console.WriteLine(@"
+==========================
+BANGAZON FINANCIAL REPORTS
+==========================
+WEEKLY REPORT
+Product                                          Amount
+-------------------------------------------------------");
+                                foreach (var r in AllRevenue)
                                 {
-                                    RevenueToPrint.Add(r);
+                                    if (r.PurchaseDate > EndOfWeek)
+                                    {
+                                        RevenueToPrint.Add(r);
+                                    }
                                 }
-                            }
 
-                                foreach (var r in RevenueToPrint)
+
+                             foreach (var r in RevenueToPrint)
                                 {
-                                    Console.WriteLine(string.Format("WEEKLY REPORT: Product: {0} Revenue: ${1}.00 ", r.ProductName, r.ProductCost));
+
+                                Console.WriteLine("{0,-25}{1,30}",
+                                r.ProductName,
+                                r.ProductCost);    
                                 }
-                                break;
+                            break;
+
                         case "2":
+
+                            Console.WriteLine(@"
+==========================
+BANGAZON FINANCIAL REPORTS
+==========================
+MONTHLY REPORT
+Product                                          Amount
+-------------------------------------------------------");
                             foreach (var r in AllRevenue)
                             {
                                 if (r.PurchaseDate > EndOfMonth)
@@ -102,10 +129,21 @@ namespace BangazonFinancials
 
                             foreach (var r in RevenueToPrint)
                             {
-                                Console.WriteLine(string.Format("MONTHLY REPORT: Product: {0} Revenue: ${1}.00 ", r.ProductName, r.ProductCost));
+                                Console.WriteLine("{0,-25}{1,30}",
+                               r.ProductName,
+                               r.ProductCost
+                               );
                             }
+                    
                             break;
                         case "3":
+                            Console.WriteLine(@"
+==========================
+BANGAZON FINANCIAL REPORTS
+==========================
+QUARTERLY REPORT
+Product                                          Amount
+-------------------------------------------------------");
                             foreach (var r in AllRevenue)
                             {
                                 if (r.PurchaseDate > EndOfQuarter)
@@ -116,20 +154,41 @@ namespace BangazonFinancials
 
                             foreach (var r in RevenueToPrint)
                             {
-                                Console.WriteLine(string.Format("QUARTERLY REPORT: Product: {0} Revenue: ${1}.00 ", r.ProductName, r.ProductCost));
+                                Console.WriteLine("{0,-25}{1,30}",
+                              r.ProductName,
+                              r.ProductCost
+                              );
                             }
 
                             break;
                         case "4":
-                           
-                                foreach (KeyValuePair<string, int> r in RevenueByCustomer)
+                            Console.WriteLine(@"
+==========================
+BANGAZON FINANCIAL REPORTS
+==========================
+Customer REVENUE REPORT
+Customer                                          Amount
+-------------------------------------------------------");
+
+                            foreach (KeyValuePair<string, int> r in RevenueByCustomer)
                                 {
-                                    Console.WriteLine(string.Format("Customer Name: {0}  Customer Revenue: ${1}.00", r.Key, r.Value));
+                                    Console.WriteLine(string.Format("{0, -25} {1, 30}", r.Key, r.Value));
                                 }
                                 break;
                            
                         case "5":
-            
+                            Console.WriteLine(@"
+==========================
+BANGAZON FINANCIAL REPORTS
+==========================
+PRODUCT REVENUE REPORT
+Product                                          Amount
+-------------------------------------------------------");
+                            foreach (KeyValuePair<string, int> r in RevenueByProduct)
+                            {
+                                Console.WriteLine(string.Format("{0, -25}  {1, 30}", r.Key, r.Value));
+                            }
+
                             break;
                     }
                     Console.ReadKey();
@@ -137,7 +196,7 @@ namespace BangazonFinancials
                 catch (Exception ex)
                 {
                     //ADDING ERROR HANDLING
-                    Console.WriteLine("Sorry an error has occcured. Please try agin ");
+                    Console.WriteLine("Sorry an error has occcured. Please try again ");
                     Console.WriteLine($"{ex}");
                     go_on = false;
                     Console.ReadKey();
