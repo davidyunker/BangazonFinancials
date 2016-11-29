@@ -112,6 +112,27 @@ namespace BangazonFinancialsTests
             Assert.Equal(CustomerRev, revenueFactory.GetRevenueByCustomer());
             Assert.NotNull(CustomerRev);
             Assert.NotEmpty(CustomerRev);
+
+            foreach (KeyValuePair<string, int> r in CustomerRev)
+            {
+                Assert.NotNull(r.Key);
+                Assert.NotNull(r.Value);
+            }
+        }
+
+        [Fact]
+        public void CanGetRevenueListedByProduct()
+        {
+            RevenueFactory revenueFactory = new RevenueFactory();
+            Dictionary<string, int> ProductRev = revenueFactory.GetRevenueByProduct();
+            Assert.NotNull(ProductRev);
+
+
+            foreach (KeyValuePair<string, int> r in ProductRev)
+            {
+                Assert.NotNull(r.Key);
+                Assert.NotNull(r.Value);
+            }
         }
 
     }
